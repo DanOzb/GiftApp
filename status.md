@@ -5,10 +5,9 @@
 * Added media player via Media3 - in box placeholders
 * finished fixing opening letters
 
-Next: 
-* Fix home screen
-* Open gifts page
+Next:
 * Fix storage with sqlLite
+* Fix gifts page
 * Make logic for routing gifts from sqlLite to app
 * Implement logic for gift opening and saving 
 * Save gift in gallery -> add navigation 
