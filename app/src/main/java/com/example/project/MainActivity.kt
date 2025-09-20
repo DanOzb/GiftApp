@@ -14,12 +14,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
@@ -31,11 +29,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -54,11 +47,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
-
+/**
+ * Enumeration for the different types of gifts available.
+ *
+ * @property LETTER For a text-based gift/message
+ * @property PICTURE For an image-based gift
+ * @property VIDEO For a video-based gift
+ */
 enum class GiftType {
     LETTER, PICTURE, VIDEO
 }
 
+/**
+ * Sealed class representing the different screens for bottom navigation.
+ *
+ * @property route The navigation for the screen
+ * @property title The title for the screen
+ * @property icon The icon for the screen
+ */
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
     object Home : Screen("home", "Home", Icons.Default.Home)
     object Letters : Screen("letters", "Letters", Icons.Default.Email)
@@ -66,6 +72,12 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object Videos : Screen("videos", "Videos", Icons.Default.PlayArrow)
 }
 
+/**
+ * Main navigation composable that sets up the app's navigation structure.
+ * Manages and handles bottom navigation bar visibility and navigation between screens.
+ *
+ * open_letter, open_picture, open_video routes hides navigation bar for full screen purposes.
+ */
 @Composable
 fun MainNavigation(){
     val navController = rememberNavController()
@@ -159,6 +171,12 @@ fun MainNavigation(){
     }
 }
 
+/**
+ * Home screen composable that displays the default screen when opening the app.
+ * Users can tap on different icons to navigate to specific gift opening screens.
+ *
+ * @param navController The navigation controller used to navigate between screens
+ */
 @Composable
 fun HomeScreen(navController: NavController){
 
@@ -173,25 +191,30 @@ fun HomeScreen(navController: NavController){
             contentDescription = "Letter Icon",
             modifier = Modifier.clickable(onClick = {
                 navController.navigate("open_letter")
-            })
+            }).size(40.dp)
         )
         Image(
             imageVector = Icons.Default.Face,
             contentDescription = "Picture Icon",
             modifier = Modifier.clickable(onClick = {
                 navController.navigate("open_picture")
-            })
+            }).size(40.dp)
         )
         Image(
             imageVector = Icons.Default.PlayArrow,
             contentDescription = "Video Icon",
             modifier = Modifier.clickable(onClick = {
                 navController.navigate("open_video")
-            })
+            }).size(40.dp)
         )
     }
 }
 
+/**
+ * Screen composable for displaying a newly opened letter gift.
+ * Currently shows a placeholder cyan background.
+ *
+ */
 @Composable
 fun NewLetterScreen(){
     //TODO: get random locked letter gift
@@ -201,6 +224,12 @@ fun NewLetterScreen(){
             .background(color = Color.Cyan)
     )
 }
+
+/**
+ * Screen composable for displaying a newly opened image gift.
+ * Currently shows a placeholder cyan background.
+ *
+ */
 @Composable
 fun NewPictureScreen(){
     //TODO: get random locked picture gift
@@ -210,6 +239,12 @@ fun NewPictureScreen(){
             .background(color = Color.Cyan)
     )
 }
+
+/**
+ * Screen composable for displaying a newly opened video gift.
+ * Currently shows a placeholder cyan background.
+ *
+ */
 @Composable
 fun NewVideoScreen(){
     //TODO: get random locked video gift
@@ -220,25 +255,41 @@ fun NewVideoScreen(){
     )
 }
 
+/**
+ * Screen composable that calls LazyGrid with gift type letter
+ */
 @Composable
 fun LettersScreen(){
     LazyGrid(GiftType.LETTER)
 }
+
+/**
+ * Screen composable that calls LazyGrid with gift type picture
+ */
 @Composable
 fun PicturesScreen(){
     LazyGrid(GiftType.PICTURE)
 }
+
+/**
+ * Screen composable that calls LazyGrid with gift type video
+ */
 @Composable
 fun VideosScreen(){
     LazyGrid(GiftType.VIDEO)
 }
 
-/*
-    TODO: Change dummy letters, videos and pictures into cached ones
+/**
+ * Reusable composable that displays a lazy vertical grid depending on the gift type.
+ *
+ * Currently uses dummy data for testing purposes.
+ *
+ * @param gift The type of gift to display in the grid.
  */
 @Composable
 fun LazyGrid(gift: GiftType){
     //Test lists
+    //TODO: Change dummy letters, videos and pictures into cached ones
     val list = (1..40).map {it.toString()}
 
     LazyVerticalGrid(
@@ -308,12 +359,12 @@ fun LazyGrid(gift: GiftType){
     )
 }
 
-
+/**
+ * Main Activity class that serves as the entry point for the application.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             MainNavigation()
