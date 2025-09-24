@@ -2,31 +2,42 @@ package com.project.local
 
 import androidx.room.Dao
 import androidx.room.Database
+import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RoomDatabase
 
 @Dao
 interface GiftDao{
-    @Query("SELECT * FROM letters")
-    fun getAllLetters() : List<Letter>
+    @Query("SELECT * FROM gifts WHERE gifts.type='LETTER'")
+    fun getAllLetters() : List<Gift>
 
-    @Query("SELECT * FROM pictures")
-    fun getAllPictures() : List<Picture>
+    @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE'")
+    fun getAllPictures() : List<Gift>
 
-    @Query("SELECT * FROM videos")
-    fun getAllVideos() : List<Video>
+    @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO'")
+    fun getAllVideos() : List<Gift>
 
-    @Query("SELECT * FROM letters WHERE favorite=true")
-    fun getFavoriteLetters() : List<Letter>
+    @Query("SELECT * FROM gifts WHERE gifts.type='LETTER' AND gifts.favorite=true")
+    fun getFavoriteLetters() : List<Gift>
 
-    @Query("SELECT * FROM pictures WHERE favorite=true")
-    fun getFavoritePictures() : List<Picture>
+    @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE' AND gifts.favorite=true")
+    fun getFavoritePictures() : List<Gift>
 
-    @Query("SELECT * FROM videos WHERE favorite=true")
-    fun getFavoriteVideos() : List<Video>
+    @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO' AND gifts.favorite=true")
+    fun getFavoriteVideos() : List<Gift>
+
+    @Insert
+    fun insertAll(vararg gifts: Gift)
+
+    @Insert
+    fun insert(gift: Gift)
+
+    @Delete
+    fun delete(gift: Gift)
 }
 
-@Database(entities = [Letter::class, Picture::class, Video::class], version = 1)
+@Database(entities = [Gift::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun giftDao() : GiftDao
 }

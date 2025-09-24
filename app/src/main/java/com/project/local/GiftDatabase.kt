@@ -3,6 +3,8 @@ package com.project.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.project.model.GiftType
+import java.sql.Timestamp
 
 /**
  *
@@ -10,26 +12,12 @@ import androidx.room.PrimaryKey
  *
  */
 
-@Entity(tableName = "letters")
-data class Letter(
+@Entity(tableName = "gifts")
+data class Gift(
     @PrimaryKey val id: Int,
-    val message: String,
-    val favorite: Boolean
-)
-
-@Entity(tableName = "pictures")
-data class Picture(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "file_path") val filePath: String,
-    @ColumnInfo(name = "file_name")val fileName: String,
+    val type: GiftType,
+    val content: String,
     val favorite: Boolean,
-)
-
-@Entity(tableName = "videos")
-data class Video(
-    @PrimaryKey val id: Long,
-    @ColumnInfo(name = "file_path") val filePath: String,
-    @ColumnInfo(name = "file_name")val fileName: String,
-    val favorite: Boolean,
+    val timestamp: Timestamp
 )
 
