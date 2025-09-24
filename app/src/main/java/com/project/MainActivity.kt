@@ -1,9 +1,9 @@
-package com.example.project
+package com.project
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.project.ui.screens.MainNavigation
+import com.project.ui.screens.MainNavigation
 
 /**
  * Main Activity class that serves as the entry point for the application.

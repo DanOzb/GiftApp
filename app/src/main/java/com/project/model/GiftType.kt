@@ -1,4 +1,4 @@
-package com.example.project.domain.model
+package com.project.model
 
 /**
  * Enumeration for the different types of gifts available.

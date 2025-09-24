@@ -1,4 +1,4 @@
-package com.example.project.data.local
+package com.project.local
 
 import androidx.room.Dao
 import androidx.room.Database

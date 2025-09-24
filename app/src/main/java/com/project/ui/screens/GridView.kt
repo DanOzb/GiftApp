@@ -1,4 +1,4 @@
-package com.example.project.ui.screens
+package com.project.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project.domain.model.GiftType
+import com.project.model.GiftType
 
 
 /**

@@ -1,4 +1,4 @@
-package com.example.project.ui.screens
+package com.project.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
