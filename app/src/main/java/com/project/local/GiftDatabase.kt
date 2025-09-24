@@ -21,3 +21,14 @@ data class Gift(
     val timestamp: Timestamp
 )
 
+@Entity(tableName = "tags")
+data class Tag(
+    @PrimaryKey val id: Int,
+    val name: String
+)
+
+@Entity(tableName = "gift_tags", primaryKeys = ["giftId", "tagId"] )
+data class GiftTag(
+    val giftId: Int,
+    val tagId: Int
+)
