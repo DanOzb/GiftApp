@@ -11,34 +11,34 @@ import androidx.room.Update
 @Dao
 interface GiftDao{
     @Query("SELECT * FROM gifts WHERE gifts.type='LETTER'")
-    fun getAllLetters() : List<Gift>
+    suspend fun getAllLetters() : List<Gift>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE'")
-    fun getAllPictures() : List<Gift>
+    suspend fun getAllPictures() : List<Gift>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO'")
-    fun getAllVideos() : List<Gift>
+    suspend fun getAllVideos() : List<Gift>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='LETTER' AND gifts.favorite=true")
-    fun getFavoriteLetters() : List<Gift>
+    suspend fun getFavoriteLetters() : List<Gift>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE' AND gifts.favorite=true")
-    fun getFavoritePictures() : List<Gift>
+    suspend fun getFavoritePictures() : List<Gift>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO' AND gifts.favorite=true")
-    fun getFavoriteVideos() : List<Gift>
+    suspend fun getFavoriteVideos() : List<Gift>
 
     @Insert
-    fun insertAll(vararg gifts: Gift)
+    suspend fun insertAll(vararg gifts: Gift)
 
     @Insert
-    fun insert(gift: Gift)
+    suspend fun insert(gift: Gift)
 
     @Update
-    fun updateGift(gift: Gift)
+    suspend fun updateGift(gift: Gift)
 
     @Delete
-    fun delete(gift: Gift)
+    suspend fun delete(gift: Gift)
 }
 
 @Database(entities = [Gift::class], version = 1)
