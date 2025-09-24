@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RoomDatabase
+import androidx.room.Update
 
 @Dao
 interface GiftDao{
@@ -32,6 +33,9 @@ interface GiftDao{
 
     @Insert
     fun insert(gift: Gift)
+
+    @Update
+    fun updateGift(gift: Gift)
 
     @Delete
     fun delete(gift: Gift)
