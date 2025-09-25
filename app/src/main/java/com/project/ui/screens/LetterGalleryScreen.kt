@@ -1,7 +1,7 @@
 package com.project.ui.screens
 
 import androidx.compose.runtime.Composable
-import com.project.model.GiftType
+import com.project.domain.model.GiftType
 
 /**
  * Screen composable that calls LazyGrid with gift type letter

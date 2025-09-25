@@ -1,40 +1,42 @@
-package com.project.local
+package com.project.data.local
 
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GiftDao{
     @Query("SELECT * FROM gifts WHERE gifts.type='LETTER'")
-    suspend fun getAllLetters() : List<Gift>
+    fun getAllLetters() : Flow<List<Gift>>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE'")
-    suspend fun getAllPictures() : List<Gift>
+    fun getAllPictures() : Flow<List<Gift>>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO'")
-    suspend fun getAllVideos() : List<Gift>
+    fun getAllVideos() : Flow<List<Gift>>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='LETTER' AND gifts.favorite=true")
-    suspend fun getFavoriteLetters() : List<Gift>
+    fun getFavoriteLetters() : Flow<List<Gift>>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE' AND gifts.favorite=true")
-    suspend fun getFavoritePictures() : List<Gift>
+    fun getFavoritePictures() : Flow<List<Gift>>
 
     @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO' AND gifts.favorite=true")
-    suspend fun getFavoriteVideos() : List<Gift>
+    fun getFavoriteVideos() : Flow<List<Gift>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg gifts: Gift)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(gift: Gift)
 
-    @Update
+    @Update()
     suspend fun updateGift(gift: Gift)
 
     @Delete

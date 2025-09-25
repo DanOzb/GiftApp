@@ -1,9 +1,8 @@
-package com.project.local
+package com.project.data.local
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.project.model.GiftType
+import com.project.domain.model.GiftType
 import java.sql.Timestamp
 
 /**

@@ -1,4 +1,4 @@
-package com.project.ui.screens
+package com.project.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,6 +26,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.project.ui.screens.HomeScreen
+import com.project.ui.screens.LettersScreen
+import com.project.ui.screens.NewLetterScreen
+import com.project.ui.screens.NewPictureScreen
+import com.project.ui.screens.NewVideoScreen
+import com.project.ui.screens.PicturesScreen
+import com.project.ui.screens.VideosScreen
 import kotlin.collections.contains
 
 
