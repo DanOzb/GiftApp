@@ -31,9 +31,6 @@ interface GiftDao{
     fun getFavoriteVideos() : Flow<List<Gift>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg gifts: Gift)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(gift: Gift)
 
     @Update()
@@ -43,7 +40,4 @@ interface GiftDao{
     suspend fun delete(gift: Gift)
 }
 
-@Database(entities = [Gift::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
-    abstract fun giftDao() : GiftDao
-}
+

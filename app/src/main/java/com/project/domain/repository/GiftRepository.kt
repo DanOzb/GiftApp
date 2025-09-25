@@ -11,4 +11,7 @@ interface GiftRepository {
     val getFavPictures: Flow<List<Gift>>
     val getFavVideos: Flow<List<Gift>>
 
+    suspend fun addGift(gift: Gift)
+    suspend fun updateGift(gift: Gift)
+    suspend fun deleteGift(gift: Gift)
 }

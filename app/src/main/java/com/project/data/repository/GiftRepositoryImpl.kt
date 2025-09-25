@@ -13,4 +13,10 @@ class GiftRepositoryImpl(private val dao: GiftDao): GiftRepository {
     override val getFavPictures: Flow<List<Gift>> = dao.getFavoritePictures()
     override val getFavVideos: Flow<List<Gift>> = dao.getFavoriteVideos()
 
+    override suspend fun addGift(gift: Gift) = dao.insert(gift)
+
+    override suspend fun updateGift(gift: Gift) = dao.updateGift(gift)
+
+    override suspend fun deleteGift(gift: Gift) = dao.delete(gift)
+
 }

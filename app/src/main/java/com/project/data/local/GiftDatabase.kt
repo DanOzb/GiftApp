@@ -1,7 +1,10 @@
 package com.project.data.local
 
+import androidx.room.ColumnInfo
+import androidx.room.Database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.RoomDatabase
 import com.project.domain.model.GiftType
 import java.sql.Timestamp
 
@@ -13,11 +16,11 @@ import java.sql.Timestamp
 
 @Entity(tableName = "gifts")
 data class Gift(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val type: GiftType,
     val content: String,
-    val favorite: Boolean,
-    val timestamp: Timestamp
+    val favorite: Boolean = false,
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 @Entity(tableName = "tags")
@@ -31,3 +34,8 @@ data class GiftTag(
     val giftId: Int,
     val tagId: Int
 )
+
+@Database(entities = [Gift::class, Tag::class, GiftTag::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun giftDao() : GiftDao
+}
