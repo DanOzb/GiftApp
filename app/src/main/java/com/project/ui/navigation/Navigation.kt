@@ -26,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.project.domain.viewModel.GiftViewModel
 import com.project.ui.screens.HomeScreen
 import com.project.ui.screens.LettersScreen
 import com.project.ui.screens.NewLetterScreen
@@ -58,7 +59,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
  * open_letter, open_picture, open_video routes hides navigation bar for full screen purposes.
  */
 @Composable
-fun MainNavigation(){
+fun MainNavigation(viewModel: GiftViewModel){
     val navController = rememberNavController()
 
     val screens = listOf(
@@ -126,13 +127,22 @@ fun MainNavigation(){
             )
         ){
             composable(Screen.Home.route) {
-                HomeScreen(navController)
+                HomeScreen(
+                    navController,
+                    viewModel
+                )
             }
             composable(Screen.Letters.route) {
-                LettersScreen()
+                LettersScreen(
+                    letters = TODO(),
+                    onClickGift = TODO()
+                )
             }
             composable(Screen.Pictures.route) {
-                PicturesScreen()
+                PicturesScreen(
+                    pictures = TODO(),
+                    onClickGift = TODO()
+                )
             }
             composable(Screen.Videos.route) {
                 VideosScreen()

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.project.domain.viewModel.GiftViewModel
 
 /**
  * Home screen composable that displays the default screen when opening the app.
@@ -23,7 +24,7 @@ import androidx.navigation.NavController
  * @param navController The navigation controller used to navigate between screens
  */
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController, viewModel: GiftViewModel){
 
     Column (
         modifier = Modifier.fillMaxWidth(),

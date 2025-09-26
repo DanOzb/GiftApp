@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.RoomDatabase
 import com.project.domain.model.GiftType
+import com.project.domain.model.GridItem
 import java.sql.Timestamp
 
 /**
@@ -16,12 +17,13 @@ import java.sql.Timestamp
 
 @Entity(tableName = "gifts")
 data class Gift(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) override val id: Int = 0,
+    override val title: String,
     val type: GiftType,
-    val content: String,
+    override val content: String,
     val favorite: Boolean = false,
     val timestamp: Long = System.currentTimeMillis()
-)
+) : GridItem
 
 @Entity(tableName = "tags")
 data class Tag(

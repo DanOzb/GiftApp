@@ -1,12 +1,13 @@
 package com.project.ui.screens
 
 import androidx.compose.runtime.Composable
-import com.project.domain.model.GiftType
 
 /**
- * Screen composable that calls LazyGrid with gift type video
+ * Screen composable that uses ReusableGrid
+ *
+ * TODO: Add thumbnails to display each video.
  */
 @Composable
 fun VideosScreen(){
-    LazyGrid(GiftType.VIDEO)
+    //ReusableGrid() { }
 }

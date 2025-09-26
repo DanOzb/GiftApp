@@ -8,7 +8,8 @@
 * finished fixing opening letters
 
 ## Next:
-* Fix storage with Room
+* Fix Errors
+* Finish setting up communication between ui and viewmodel
 * Fix gifts page
 * Make logic for routing gifts from sqlLite to app
 * Implement logic for gift opening and saving 
