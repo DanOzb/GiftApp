@@ -1,4 +1,4 @@
-package com.project.viewModel
+package com.project.domain.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,7 +7,6 @@ import com.project.domain.model.GiftType
 import com.project.domain.repository.GiftRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -41,8 +40,9 @@ class GiftViewModel(private val repository: GiftRepository): ViewModel() {
     fun addGift(
         type: GiftType,
         content: String,
+        title: String,
     ) = viewModelScope.launch {
-        repository.addGift(Gift(type = type, content = content))
+        repository.addGift(Gift(title = title, type = type, content = content))
     }
 
     fun deleteGift(gift: Gift) = viewModelScope.launch {
