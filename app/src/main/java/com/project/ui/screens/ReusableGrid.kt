@@ -16,8 +16,6 @@ import com.project.domain.model.GridItem
 /**
  * Reusable composable that displays a lazy vertical grid depending on the gift type.
  *
- * TODO: Switch to exoplayer + image view
- *
  * @param gift The type of gift to display in the grid.
  */
 

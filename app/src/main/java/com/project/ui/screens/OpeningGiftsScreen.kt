@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
  */
 @Composable
 fun NewLetterScreen(){
-    //TODO: get random locked letter gift
+    //TODO: get new letter from remote api
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -30,7 +30,7 @@ fun NewLetterScreen(){
  */
 @Composable
 fun NewPictureScreen(){
-    //TODO: get random locked picture gift
+    //TODO: get new letter from remote api
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -45,7 +45,7 @@ fun NewPictureScreen(){
  */
 @Composable
 fun NewVideoScreen(){
-    //TODO: get random locked video gift
+    //TODO: get new letter from remote api
     Box(
         modifier = Modifier
             .fillMaxSize()
