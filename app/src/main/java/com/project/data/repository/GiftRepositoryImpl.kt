@@ -4,8 +4,11 @@ import com.project.data.local.Gift
 import com.project.data.local.GiftDao
 import com.project.domain.repository.GiftRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class GiftRepositoryImpl(private val dao: GiftDao): GiftRepository {
+@Singleton
+class GiftRepositoryImpl @Inject constructor(private val dao: GiftDao): GiftRepository {
     override val getAllLetters: Flow<List<Gift>> = dao.getAllLetters()
     override val getAllPictures: Flow<List<Gift>> = dao.getAllPictures()
     override val getAllVideos: Flow<List<Gift>> = dao.getAllVideos()

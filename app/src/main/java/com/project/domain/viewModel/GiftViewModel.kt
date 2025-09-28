@@ -5,13 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.project.data.local.Gift
 import com.project.domain.model.GiftType
 import com.project.domain.repository.GiftRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GiftViewModel(private val repository: GiftRepository): ViewModel() {
+@HiltViewModel
+class GiftViewModel @Inject constructor(
+    private val repository: GiftRepository
+): ViewModel() {
 
     val letters: StateFlow<List<Gift>> = repository.getAllLetters.map {
         it.sortedByDescending { gift -> gift.id }

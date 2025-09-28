@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -60,6 +61,10 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
  */
 @Composable
 fun MainNavigation(viewModel: GiftViewModel){
+    val lettersList by viewModel.letters.collectAsStateWithLifecycle()
+    val picturesList by viewModel.pictures.collectAsStateWithLifecycle()
+    val videosList by viewModel.videos.collectAsStateWithLifecycle()
+
     val navController = rememberNavController()
 
     val screens = listOf(
@@ -133,19 +138,23 @@ fun MainNavigation(viewModel: GiftViewModel){
                 )
             }
             composable(Screen.Letters.route) {
+
                 LettersScreen(
-                    letters = TODO(),
+                    letters = lettersList,
                     onClickGift = TODO()
                 )
             }
             composable(Screen.Pictures.route) {
                 PicturesScreen(
-                    pictures = TODO(),
+                    pictures = picturesList,
                     onClickGift = TODO()
                 )
             }
             composable(Screen.Videos.route) {
-                VideosScreen()
+                VideosScreen(
+                    videos = videosList,
+                    onClickGift = TODO()
+                )
             }
             composable("open_letter") {
                 NewLetterScreen()
