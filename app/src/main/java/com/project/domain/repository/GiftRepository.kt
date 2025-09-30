@@ -1,17 +1,13 @@
 package com.project.domain.repository
 
-import com.project.data.local.Gift
+import com.project.data.local.GiftEntity
 import kotlinx.coroutines.flow.Flow
 
 interface GiftRepository {
-    val getAllLetters: Flow<List<Gift>>
-    val getAllPictures: Flow<List<Gift>>
-    val getAllVideos: Flow<List<Gift>>
-    val getFavLetters: Flow<List<Gift>>
-    val getFavPictures: Flow<List<Gift>>
-    val getFavVideos: Flow<List<Gift>>
+    val getAllGifts: Flow<List<GiftEntity>>
+    val getFavoriteGifts: Flow<List<GiftEntity>>
 
-    suspend fun addGift(gift: Gift)
-    suspend fun updateGift(gift: Gift)
-    suspend fun deleteGift(gift: Gift)
+    suspend fun addGift(giftEntity: GiftEntity)
+    suspend fun updateGift(giftEntity: GiftEntity)
+    suspend fun deleteGift(giftEntity: GiftEntity)
 }

@@ -10,32 +10,20 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GiftDao{
-    @Query("SELECT * FROM gifts WHERE gifts.type='LETTER'")
-    fun getAllLetters() : Flow<List<Gift>>
+    @Query("SELECT * FROM gifts")
+    fun getAllGifts() : Flow<List<GiftEntity>>
 
-    @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE'")
-    fun getAllPictures() : Flow<List<Gift>>
-
-    @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO'")
-    fun getAllVideos() : Flow<List<Gift>>
-
-    @Query("SELECT * FROM gifts WHERE gifts.type='LETTER' AND gifts.favorite=true")
-    fun getFavoriteLetters() : Flow<List<Gift>>
-
-    @Query("SELECT * FROM gifts WHERE gifts.type='PICTURE' AND gifts.favorite=true")
-    fun getFavoritePictures() : Flow<List<Gift>>
-
-    @Query("SELECT * FROM gifts WHERE gifts.type='VIDEO' AND gifts.favorite=true")
-    fun getFavoriteVideos() : Flow<List<Gift>>
+    @Query("SELECT * FROM gifts WHERE gifts.favorite=true")
+    fun getFavoriteGifts() : Flow<List<GiftEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(gift: Gift)
+    suspend fun insert(giftEntity: GiftEntity)
 
     @Update()
-    suspend fun updateGift(gift: Gift)
+    suspend fun updateGift(giftEntity: GiftEntity)
 
     @Delete
-    suspend fun delete(gift: Gift)
+    suspend fun delete(giftEntity: GiftEntity)
 }
 
 

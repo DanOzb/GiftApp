@@ -10,14 +10,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.project.domain.viewModel.PlayerViewModel
 
 
-/**
- * Screen composable for displaying a newly opened letter gift.
- * Currently shows a placeholder cyan background.
- *
- */
 @Composable
-fun OpenLetterScreen(){
-    //TODO: get new letter from remote api
+fun OpenGiftScreen(){
+    //TODO: get new gift
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -25,33 +20,3 @@ fun OpenLetterScreen(){
     )
 }
 
-/**
- * Screen composable for displaying a newly opened image gift.
- * Currently shows a placeholder cyan background.
- *
- */
-@Composable
-fun OpenPictureScreen(){
-    //TODO: get new letter from remote api
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Cyan)
-    )
-}
-
-/**
- * Screen composable for displaying a newly opened video gift.
- * Currently shows a placeholder cyan background.
- *
- */
-@Composable
-fun OpenVideoScreen(){
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Cyan)
-    ){
-
-    }
-}

@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -29,14 +27,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.project.domain.viewModel.GiftViewModel
 import com.project.domain.viewModel.PlayerViewModel
+import com.project.ui.screens.GalleryScreen
 import com.project.ui.screens.HomeScreen
-import com.project.ui.screens.LettersScreen
-import com.project.ui.screens.OpenLetterScreen
-import com.project.ui.screens.OpenPictureScreen
-import com.project.ui.screens.OpenVideoScreen
-import com.project.ui.screens.PicturesScreen
-import com.project.ui.screens.VideosScreen
-import kotlin.collections.contains
+import com.project.ui.screens.OpenGiftScreen
 
 
 /**
@@ -48,11 +41,8 @@ import kotlin.collections.contains
  */
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
     object Home : Screen("home", "Home", Icons.Default.Home)
-    object Letters : Screen("letters", "Letters", Icons.Default.Email)
-    object Pictures : Screen("pictures", "Pictures", Icons.Default.Face)
-    object Videos : Screen("videos", "Videos", Icons.Default.PlayArrow)
+    object Gallery : Screen("gallery", "Gallery", Icons.Default.Email)
 }
-
 
 /**
  * Main navigation composable that sets up the app's navigation structure.
@@ -65,21 +55,18 @@ fun MainNavigation (
     viewModel: GiftViewModel,
     playerViewModel: PlayerViewModel
 ){
-    val lettersList by viewModel.letters.collectAsStateWithLifecycle()
-    val picturesList by viewModel.pictures.collectAsStateWithLifecycle()
-    val videosList by viewModel.videos.collectAsStateWithLifecycle()
+    val giftsList by viewModel.gifts.collectAsStateWithLifecycle()
+    val favGiftsList by viewModel.gifts.collectAsStateWithLifecycle()
 
     val navController = rememberNavController()
 
     val screens = listOf(
         Screen.Home,
-        Screen.Letters,
-        Screen.Pictures,
-        Screen.Videos,
+        Screen.Gallery
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val hideBottomBar = currentDestination?.route in listOf("open_letter", "open_picture", "open_video")
+    val hideBottomBar = currentDestination?.route.toString() in "open_gift"
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -141,33 +128,16 @@ fun MainNavigation (
                     viewModel
                 )
             }
-            composable(Screen.Letters.route) {
 
-                LettersScreen(
-                    letters = lettersList,
+            composable(Screen.Gallery.route) {
+                GalleryScreen(
+                    giftsList,
                     onClickGift = TODO()
                 )
             }
-            composable(Screen.Pictures.route) {
-                PicturesScreen(
-                    pictures = picturesList,
-                    onClickGift = TODO()
-                )
-            }
-            composable(Screen.Videos.route) {
-                VideosScreen(
-                    videos = videosList,
-                    onClickGift = TODO()
-                )
-            }
-            composable("open_letter") {
-                OpenLetterScreen()
-            }
-            composable("open_picture") {
-                OpenPictureScreen()
-            }
-            composable("open_video") {
-                OpenVideoScreen()
+
+            composable("open_gift") {
+                OpenGiftScreen()
             }
         }
     }

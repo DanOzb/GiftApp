@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.Download
 import androidx.media3.exoplayer.offline.DownloadManager
-import com.project.domain.model.GiftType
 import com.project.domain.viewModel.GiftViewModel
 import com.project.domain.viewModel.PlayerViewModel
 import com.project.ui.navigation.MainNavigation
@@ -33,7 +32,7 @@ class MainActivity : ComponentActivity() {
             finalException: Exception?
         ) {
             if(download.state == Download.STATE_COMPLETED){
-                viewModel.addGift(GiftType.VIDEO, download.request.uri.toString(), "title")
+                //TODO: play when user clicks video
             }
         }
     }
@@ -42,7 +41,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MainNavigation()
+            MainNavigation(
+                viewModel = TODO(),
+                playerViewModel = TODO()
+            )
         }
 
         playerViewModel.addDownloadListener(downloadListener)
