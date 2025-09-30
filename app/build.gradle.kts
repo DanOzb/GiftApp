@@ -75,7 +75,9 @@ dependencies {
     //Media3
     implementation("androidx.media3:media3-exoplayer:1.3.1")
     implementation("androidx.media3:media3-ui:1.3.1")
+    implementation("androidx.media3:media3-datasource-cache:1.3.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
+    implementation("androidx.media3:media3-exoplayer-download:1.3.1")
 
     //Room
     val room_version = "2.8.0"
@@ -85,4 +87,5 @@ dependencies {
     //Hilt
     implementation("com.google.dagger:hilt-android:2.57.1")
     ksp("com.google.dagger:hilt-android-compiler:2.57.1")
+    implementation("androidx.hilt:hilt-navigation-compose:2.57.1")
 }
