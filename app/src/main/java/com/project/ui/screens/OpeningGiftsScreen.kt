@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.viewinterop.AndroidView
+import com.project.domain.viewModel.PlayerViewModel
 
 
 /**
@@ -14,7 +16,7 @@ import androidx.compose.ui.graphics.Color
  *
  */
 @Composable
-fun NewLetterScreen(){
+fun OpenLetterScreen(){
     //TODO: get new letter from remote api
     Box(
         modifier = Modifier
@@ -29,7 +31,7 @@ fun NewLetterScreen(){
  *
  */
 @Composable
-fun NewPictureScreen(){
+fun OpenPictureScreen(){
     //TODO: get new letter from remote api
     Box(
         modifier = Modifier
@@ -44,11 +46,12 @@ fun NewPictureScreen(){
  *
  */
 @Composable
-fun NewVideoScreen(){
-    //TODO: get new letter from remote api
+fun OpenVideoScreen(){
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.Cyan)
-    )
+    ){
+
+    }
 }

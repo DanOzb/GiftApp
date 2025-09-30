@@ -28,11 +28,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.project.domain.viewModel.GiftViewModel
+import com.project.domain.viewModel.PlayerViewModel
 import com.project.ui.screens.HomeScreen
 import com.project.ui.screens.LettersScreen
-import com.project.ui.screens.NewLetterScreen
-import com.project.ui.screens.NewPictureScreen
-import com.project.ui.screens.NewVideoScreen
+import com.project.ui.screens.OpenLetterScreen
+import com.project.ui.screens.OpenPictureScreen
+import com.project.ui.screens.OpenVideoScreen
 import com.project.ui.screens.PicturesScreen
 import com.project.ui.screens.VideosScreen
 import kotlin.collections.contains
@@ -60,7 +61,10 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
  * open_letter, open_picture, open_video routes hides navigation bar for full screen purposes.
  */
 @Composable
-fun MainNavigation(viewModel: GiftViewModel){
+fun MainNavigation (
+    viewModel: GiftViewModel,
+    playerViewModel: PlayerViewModel
+){
     val lettersList by viewModel.letters.collectAsStateWithLifecycle()
     val picturesList by viewModel.pictures.collectAsStateWithLifecycle()
     val videosList by viewModel.videos.collectAsStateWithLifecycle()
@@ -157,13 +161,13 @@ fun MainNavigation(viewModel: GiftViewModel){
                 )
             }
             composable("open_letter") {
-                NewLetterScreen()
+                OpenLetterScreen()
             }
             composable("open_picture") {
-                NewPictureScreen()
+                OpenPictureScreen()
             }
             composable("open_video") {
-                NewVideoScreen()
+                OpenVideoScreen()
             }
         }
     }
