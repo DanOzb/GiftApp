@@ -5,14 +5,15 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.project"
+    namespace = "com.project"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.project"
+        applicationId = "com.project"
         minSdk = 31
         targetSdk = 35
         versionCode = 1
@@ -88,4 +89,13 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.57.1")
     ksp("com.google.dagger:hilt-android-compiler:2.57.1")
     implementation("androidx.hilt:hilt-navigation-compose:2.57.1")
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+
+    //Firestore
+    implementation("com.google.firebase:firebase-firestore")
+
+    //Cloud Storage
+    implementation("com.google.firebase:firebase-storage")
 }
