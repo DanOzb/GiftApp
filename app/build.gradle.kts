@@ -60,42 +60,55 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
 
     // navigation
-    val nav_version = "2.9.4"
+    val nav_version = "2.9.5"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     //coil
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
 
     //Media3
-    implementation("androidx.media3:media3-exoplayer:1.3.1")
-    implementation("androidx.media3:media3-ui:1.3.1")
+    implementation("androidx.media3:media3-exoplayer:1.8.0")
+    implementation("androidx.media3:media3-ui:1.8.0")
     implementation("androidx.media3:media3-datasource-cache:1.3.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.media3:media3-exoplayer-download:1.3.1")
 
     //Room
-    val room_version = "2.8.0"
+    val room_version = "2.8.1"
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
 
     //Hilt
-    implementation("com.google.dagger:hilt-android:2.57.1")
-    ksp("com.google.dagger:hilt-android-compiler:2.57.1")
-    implementation("androidx.hilt:hilt-navigation-compose:2.57.1")
+    implementation("com.google.dagger:hilt-android:2.57.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.57.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
 
     //Firestore
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
     //Cloud Storage
     implementation("com.google.firebase:firebase-storage")
+
+    // Firebase Bill of Materials (BoM)
+    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+
+
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
 }

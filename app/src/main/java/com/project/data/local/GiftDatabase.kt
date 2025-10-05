@@ -18,7 +18,7 @@ data class GiftEntity(
     val id: Int,
     val title: String,
     val sender: String,
-    val timestamp: Long,
+    val timestamp: String,
     val favorite: Boolean = false,
     val contentBlocks: List<ContentBlock>,
 )

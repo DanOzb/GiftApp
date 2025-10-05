@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
             finalException: Exception?
         ) {
             if(download.state == Download.STATE_COMPLETED){
-                //TODO: play when user clicks video
+
             }
         }
     }
@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MainNavigation(
-                viewModel = TODO(),
-                playerViewModel = TODO()
+                viewModel = viewModel,
+                playerViewModel = playerViewModel
             )
         }
 
