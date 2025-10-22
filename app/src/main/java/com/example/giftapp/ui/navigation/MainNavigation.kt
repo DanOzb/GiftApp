@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -26,15 +27,14 @@ import com.example.giftapp.ui.screens.OpenGiftScreen
 import com.example.giftapp.ui.screens.SendGiftScreen
 
 
-sealed class BottomNavScreens(val route: String, val title: String, val icon: ImageVector) {
-    object Home : BottomNavScreens("home", "Home", Icons.Default.Home)
-    object Gallery : BottomNavScreens("gallery", "Gallery", Icons.Default.Email)
+sealed class NavScreens(val route: String, val title: String, val icon: ImageVector) {
+    object Home : NavScreens("home", "Home", Icons.Default.Home)
+    object Gallery : NavScreens("gallery", "Gallery", Icons.Default.PlayArrow)
+    object SendGift : NavScreens("send_gift", "Send Gift", Icons.Default.Email)
+
+    object OpenGift : NavScreens("open_gift", "Open Gift", Icons.Default.Email)
 }
 
-sealed class NavScreens(val route: String) {
-    object OpenGift : NavScreens("open_gift")
-    object SendGift : NavScreens("send_gift")
-}
 
 @Composable
 fun MainNavigation(
@@ -46,22 +46,24 @@ fun MainNavigation(
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = BottomNavScreens.Home.route,
+            startDestination = NavScreens.Home.route,
             modifier = modifier.padding(paddingValues)
         ) {
-            composable(BottomNavScreens.Home.route) {
-                HomeScreen()
+            composable(NavScreens.Home.route) {
+                HomeScreen(navController)
             }
-            composable(BottomNavScreens.Gallery.route) {
+            composable(NavScreens.Gallery.route) {
                 GalleryScreen()
+            }
+
+            composable(NavScreens.SendGift.route) {
+                SendGiftScreen()
             }
 
             composable(NavScreens.OpenGift.route) {
                 OpenGiftScreen()
             }
-            composable(NavScreens.SendGift.route) {
-                SendGiftScreen()
-            }
+
         }
     }
 }
@@ -71,8 +73,9 @@ fun BottomNavigationBar(
     navController: NavHostController
 ) {
     val screens = listOf(
-        BottomNavScreens.Home,
-        BottomNavScreens.Gallery
+        NavScreens.Home,
+        NavScreens.Gallery,
+        NavScreens.SendGift
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
