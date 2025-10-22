@@ -1,0 +1,17 @@
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+.gradle/
+build/
+!gradle-wrapper.jar
+local.properties
+.idea/
+*.iml
+.kotlinc/
+.kotlin/
+*.log
+.DS_Store
+app/release
+app/google-services.json
