@@ -1,4 +1,4 @@
 package com.example.giftapp.ui.screens
 
-class OpeningGiftScreen {
+class OpenGiftScreen {
 }
