@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.Modifier
 import com.example.giftapp.ui.navigation.MainNavigation
-import com.example.giftapp.ui.theme.GiftAppTheme
+import com.example.giftapp.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            GiftAppTheme {
+            AppTheme {
                 MainNavigation(modifier = Modifier)
             }
         }
