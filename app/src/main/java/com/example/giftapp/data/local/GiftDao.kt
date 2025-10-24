@@ -1,4 +1,8 @@
 package com.example.giftapp.data.local
 
-class GiftDao {
+import androidx.room.Dao
+
+@Dao
+interface GiftDao {
+    
 }
