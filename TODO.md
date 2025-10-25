@@ -1,9 +1,11 @@
 # TODO for each package 
 
 ## data 
-* Implement room database 
-* Implement dao 
-* Implement repositoryImpl
+✅Implement room database
+✅Implement dao
+✅Implement repositoryImpl
+* Downloader -> for downloading from peer in chunks 
+* uploader -> uploading in chunks
 
 ## di - Hilt dependency injection
 * AppModule 
@@ -12,9 +14,7 @@
 
 ## domain 
 * ContentBlock -> GiftEntity's content blocks
-* GiftEntity -> used to define a table in db 
-* RemoteGift -> Serializable class used to convert json to object 
-* GiftConverter -> Used to convert from RemoteGift to ContentBlock, vice versa (maybe skip)
+* GiftEntity -> used to define a table in db
 
 ## viewmodel 
 * GiftViewModel -> viewmodel for room db 
