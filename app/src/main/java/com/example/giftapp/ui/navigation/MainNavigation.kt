@@ -47,7 +47,7 @@ fun MainNavigation(
             modifier = modifier.padding(paddingValues)
         ) {
             composable(NavScreens.Home.route) {
-                HomeScreen(navController)
+                HomeScreen()
             }
             composable(NavScreens.Gallery.route) {
                 GalleryScreen()
