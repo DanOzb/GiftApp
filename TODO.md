@@ -4,8 +4,6 @@
 ✅Implement room database
 ✅Implement dao
 ✅Implement repositoryImpl
-* Downloader -> for downloading from peer in chunks 
-* uploader -> uploading in chunks
 
 ## di - Hilt dependency injection
 * AppModule 
@@ -13,8 +11,10 @@
 * MediaModule 
 
 ## domain 
-* ContentBlock -> GiftEntity's content blocks
-* GiftEntity -> used to define a table in db
+✅ContentBlock -> GiftEntity's content blocks
+✅GiftEntity -> used to define a table in db
+* RemoteGift 
+* GiftConverter
 
 ## viewmodel 
 * GiftViewModel -> viewmodel for room db 
