@@ -38,6 +38,13 @@ data class VideoBlock(
 ) : ContentBlock
 
 @Serializable
+@SerialName("audio")
+data class AudioBlock(
+    override val order: Int = 0,
+    val url: String = ""
+) : ContentBlock
+
+@Serializable
 @SerialName("footer")
 data class FooterBlock(
     override val order: Int = 0,
