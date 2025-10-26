@@ -23,7 +23,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.giftapp.ui.screens.GalleryScreen
 import com.example.giftapp.ui.screens.HomeScreen
-import com.example.giftapp.ui.screens.OpenGiftScreen
 import com.example.giftapp.ui.screens.SendGiftScreen
 
 
@@ -31,8 +30,6 @@ sealed class NavScreens(val route: String, val title: String, val icon: ImageVec
     object Home : NavScreens("home", "Home", Icons.Default.Home)
     object Gallery : NavScreens("gallery", "Gallery", Icons.Default.PlayArrow)
     object SendGift : NavScreens("send_gift", "Send Gift", Icons.Default.Email)
-
-    object OpenGift : NavScreens("open_gift", "Open Gift", Icons.Default.Email)
 }
 
 
@@ -59,11 +56,6 @@ fun MainNavigation(
             composable(NavScreens.SendGift.route) {
                 SendGiftScreen()
             }
-
-            composable(NavScreens.OpenGift.route) {
-                OpenGiftScreen()
-            }
-
         }
     }
 }
