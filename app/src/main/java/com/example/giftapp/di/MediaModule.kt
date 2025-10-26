@@ -1,4 +1,49 @@
 package com.example.giftapp.di
 
-class MediaModule {
+import android.content.Context
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
+
+
+@OptIn(UnstableApi::class)
+@Module
+@InstallIn(ViewModelComponent::class)
+object MediaModule {
+
+    @Provides
+    @ViewModelScoped
+    fun provideCacheDataSourceFactory(
+        @ApplicationContext context: Context,
+        cache: SimpleCache
+    ): CacheDataSource.Factory {
+        return CacheDataSource.Factory()
+            .setCache(cache)
+            .setUpstreamDataSourceFactory(DefaultDataSource.Factory(context))
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideExoPlayer(
+        @ApplicationContext context: Context,
+        cacheDataSourceFactory: CacheDataSource.Factory
+    ): ExoPlayer {
+        return ExoPlayer.Builder(context)
+            .setMediaSourceFactory(
+                DefaultMediaSourceFactory(context)
+                    .setDataSourceFactory(cacheDataSourceFactory)
+            )
+            .build()
+    }
 }
+
