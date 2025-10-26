@@ -6,18 +6,18 @@
 ✅Implement repositoryImpl
 
 ## di - Hilt dependency injection
-* AppModule 
-* FirebaseModule
+✅AppModule
+✅FirebaseModule
 * MediaModule 
 
 ## domain 
 ✅ContentBlock -> GiftEntity's content blocks
 ✅GiftEntity -> used to define a table in db
-* RemoteGift 
-* GiftConverter
+✅RemoteGift
+✅GiftConverter
 
 ## viewmodel 
-* GiftViewModel -> viewmodel for room db 
+✅GiftViewModel -> viewmodel for room db 
 * PlayerViewModel -> viewmodel for exoplayer 
 
 ## ui 
@@ -26,3 +26,5 @@
 * HomeScreen - Add animations for screen transitions into "openGiftScreen"
 * OpeningGiftScreen - Add card style screen to flip through a gift 
 * SendGiftScreen - Add better ui + send button 
+
+* All screens: make them use view models
