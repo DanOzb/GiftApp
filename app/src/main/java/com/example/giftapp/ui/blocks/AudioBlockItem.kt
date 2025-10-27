@@ -20,24 +20,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.giftapp.domain.model.AudioBlock
+import com.example.giftapp.viewmodel.PlayerViewModel
 
 @Composable
 fun AudioBlockItem(
+    playerViewModel: PlayerViewModel,
     block: AudioBlock,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-
-    //TODO: Finish media module and player view model for exoplayer
-    val exoPlayer = null
-
-    //TODO: Remove and use player view model
     var isPlaying by remember { mutableStateOf(false) }
-
-
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -67,7 +60,12 @@ fun AudioBlockItem(
             )
 
             IconButton(
-                onClick = { isPlaying = !isPlaying }
+                onClick = {
+                    isPlaying = !isPlaying
+                    if(isPlaying) {
+                        playerViewModel.playMedia(block.url)
+                    } else playerViewModel.pauseMedia()
+                }
             ) {
                 Icon(
                     imageVector = if (isPlaying) Icons.Default.PlayArrow else Icons.Default.PlayArrow,
