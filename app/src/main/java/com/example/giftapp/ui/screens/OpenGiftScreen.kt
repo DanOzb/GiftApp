@@ -13,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.giftapp.domain.model.ContentBlock
 import com.example.giftapp.ui.blocks.ContentBlockItem
+import com.example.giftapp.viewmodel.PlayerViewModel
 
 @Composable
 fun OpenGiftScreen(
+    playerViewModel: PlayerViewModel,
     contentBlocks: List<ContentBlock>,
     modifier: Modifier = Modifier,
     onExit: () -> Unit
@@ -38,7 +40,7 @@ fun OpenGiftScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         sortedBlocks.forEach { block ->
-            ContentBlockItem(block = block)
+            ContentBlockItem(playerViewModel = playerViewModel, block = block)
         }
     }
 }

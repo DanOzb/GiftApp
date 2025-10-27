@@ -12,14 +12,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.giftapp.domain.model.GiftEntity
 import com.example.giftapp.viewmodel.GiftViewModel
 import androidx.compose.runtime.collectAsState
+import com.example.giftapp.viewmodel.PlayerViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: GiftViewModel = hiltViewModel(),
+    giftViewModel: GiftViewModel,
+    playerViewModel: PlayerViewModel
     ){
     var showGift by remember { mutableStateOf(false) }
 
@@ -32,11 +33,12 @@ fun HomeScreen(
             showGift = true
         }) {
             if(showGift){
-                viewModel.loadAndSaveGift("-1") // Replace with the actual gift ID from firebase
-                viewModel.getGiftById("-1")
-                val gift: GiftEntity? = viewModel.openedGift.collectAsState().value
+                giftViewModel.loadAndSaveGift("-1") // Replace with the actual gift ID from firebase
+                giftViewModel.getGiftById("-1")
+                val gift: GiftEntity? = giftViewModel.openedGift.collectAsState().value
                 if(gift != null){
                     OpenGiftScreen(
+                        playerViewModel = playerViewModel,
                         contentBlocks = gift.contentBlocks,
                         onExit = { showGift = false }
                     )

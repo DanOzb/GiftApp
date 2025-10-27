@@ -15,16 +15,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.giftapp.viewmodel.GiftViewModel
-
+import com.example.giftapp.viewmodel.PlayerViewModel
 
 
 @Composable
 fun GalleryScreen(
-    viewmodel: GiftViewModel = hiltViewModel()
+    giftViewModel: GiftViewModel,
+    playerViewModel: PlayerViewModel,
 ){
-    val items = viewmodel.gifts.collectAsState().value
+    val items = giftViewModel.gifts.collectAsState().value
     var openGift by remember { mutableStateOf(false) }
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 100.dp),
@@ -41,6 +41,7 @@ fun GalleryScreen(
             ) {
                 if (openGift){
                     OpenGiftScreen(
+                        playerViewModel = playerViewModel,
                         items[index].contentBlocks,
                         onExit = { openGift = false }
                     )

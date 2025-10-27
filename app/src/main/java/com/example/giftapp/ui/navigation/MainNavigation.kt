@@ -14,16 +14,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.giftapp.ui.screens.GalleryScreen
 import com.example.giftapp.ui.screens.HomeScreen
 import com.example.giftapp.ui.screens.SendGiftScreen
+import com.example.giftapp.viewmodel.GiftViewModel
+import com.example.giftapp.viewmodel.PlayerViewModel
 
 
 sealed class NavScreens(val route: String, val title: String, val icon: ImageVector) {
@@ -35,6 +39,8 @@ sealed class NavScreens(val route: String, val title: String, val icon: ImageVec
 
 @Composable
 fun MainNavigation(
+    giftViewModel: GiftViewModel = hiltViewModel(),
+    playerViewModel: PlayerViewModel = hiltViewModel(),
     modifier: Modifier
 ) {
     val navController = rememberNavController()
@@ -46,13 +52,17 @@ fun MainNavigation(
             startDestination = NavScreens.Home.route,
             modifier = modifier.padding(paddingValues)
         ) {
-            composable(NavScreens.Home.route) {
-                HomeScreen()
+            navigation(
+                route = "gift_graph",
+                startDestination = NavScreens.Home.route
+            ) {
+                composable(NavScreens.Home.route) {
+                    HomeScreen(giftViewModel, playerViewModel)
+                }
+                composable(NavScreens.Gallery.route) {
+                    GalleryScreen(giftViewModel, playerViewModel)
+                }
             }
-            composable(NavScreens.Gallery.route) {
-                GalleryScreen()
-            }
-
             composable(NavScreens.SendGift.route) {
                 SendGiftScreen()
             }
