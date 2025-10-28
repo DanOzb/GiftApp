@@ -52,16 +52,11 @@ fun MainNavigation(
             startDestination = NavScreens.Home.route,
             modifier = modifier.padding(paddingValues)
         ) {
-            navigation(
-                route = "gift_graph",
-                startDestination = NavScreens.Home.route
-            ) {
-                composable(NavScreens.Home.route) {
-                    HomeScreen(giftViewModel, playerViewModel)
-                }
-                composable(NavScreens.Gallery.route) {
-                    GalleryScreen(giftViewModel, playerViewModel)
-                }
+            composable(NavScreens.Home.route) {
+                HomeScreen(giftViewModel, playerViewModel)
+            }
+            composable(NavScreens.Gallery.route) {
+                GalleryScreen(giftViewModel, playerViewModel)
             }
             composable(NavScreens.SendGift.route) {
                 SendGiftScreen()
