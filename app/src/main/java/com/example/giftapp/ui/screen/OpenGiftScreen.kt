@@ -1,4 +1,4 @@
-package com.example.giftapp.ui.screens
+package com.example.giftapp.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.giftapp.domain.model.ContentBlock
-import com.example.giftapp.ui.blocks.ContentBlockItem
+import com.example.giftapp.ui.screen.components.ContentBlockItem
 import com.example.giftapp.viewmodel.PlayerViewModel
 
 @Composable

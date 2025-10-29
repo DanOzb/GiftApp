@@ -1,4 +1,4 @@
-package com.example.giftapp.ui.blocks
+package com.example.giftapp.ui.screen.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

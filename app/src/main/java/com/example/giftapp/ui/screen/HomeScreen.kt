@@ -1,4 +1,4 @@
-package com.example.giftapp.ui.screens
+package com.example.giftapp.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
