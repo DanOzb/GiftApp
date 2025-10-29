@@ -21,11 +21,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.giftapp.ui.screens.GalleryScreen
-import com.example.giftapp.ui.screens.HomeScreen
-import com.example.giftapp.ui.screens.SendGiftScreen
+import com.example.giftapp.ui.screen.GalleryScreen
+import com.example.giftapp.ui.screen.HomeScreen
+import com.example.giftapp.ui.screen.SendGiftScreen
 import com.example.giftapp.viewmodel.GiftViewModel
 import com.example.giftapp.viewmodel.PlayerViewModel
 
@@ -59,7 +58,7 @@ fun MainNavigation(
                 GalleryScreen(giftViewModel, playerViewModel)
             }
             composable(NavScreens.SendGift.route) {
-                SendGiftScreen()
+                SendGiftScreen(giftViewModel)
             }
         }
     }
