@@ -18,12 +18,13 @@ import androidx.compose.runtime.Composable
 fun MediaPickerButton(
     mimeType: String,
     text: String,
-    onMediaSelected: (Uri?) -> Unit,
+    onMediaSelected: (String) -> Unit,
 ){
     val pickMedia = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
-        onMediaSelected(uri)
+        //TODO: Change uri to downloadable url
+        onMediaSelected(uri.toString())
     }
 
     Button(

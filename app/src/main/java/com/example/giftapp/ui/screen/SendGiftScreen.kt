@@ -31,9 +31,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.giftapp.domain.model.ContentBlocksConverter
-import com.example.giftapp.domain.model.GiftItem
-import com.example.giftapp.domain.model.giftItemConverter
+import com.example.giftapp.domain.model.AudioBlock
+import com.example.giftapp.domain.model.ContentBlock
+import com.example.giftapp.domain.model.FooterBlock
+import com.example.giftapp.domain.model.HeaderBlock
+import com.example.giftapp.domain.model.ImageBlock
+import com.example.giftapp.domain.model.RemoteGift
+import com.example.giftapp.domain.model.TextBlock
+import com.example.giftapp.domain.model.VideoBlock
 import com.example.giftapp.ui.screen.components.AddItemMenu
 import com.example.giftapp.ui.screen.components.MediaPickerButton
 import com.example.giftapp.viewmodel.GiftViewModel
@@ -45,9 +50,7 @@ fun SendGiftScreen(
     viewModel: GiftViewModel
 ){
     var showAddMenu by remember { mutableStateOf(false) }
-    val items = remember { mutableStateListOf<GiftItem>() }
-
-    val contentBlocksConverter = remember { ContentBlocksConverter() }
+    val items = remember { mutableStateListOf<ContentBlock>() }
 
     Scaffold(
         topBar = {
@@ -55,12 +58,11 @@ fun SendGiftScreen(
                 title = { Text("Send Gift") },
                 actions = {
                     Button(onClick = {
-                        val contentblocks = giftItemConverter(items)
 
-                        val jsonString = contentBlocksConverter.fromContentBlockList(contentblocks)
-
-                        //TODO: Add function to send gift to firebase
-                        //viewModel.sendGift(jsonString)
+                        val remoteGift = RemoteGift(
+                            contentBlocks = items
+                        )
+                        viewModel.sendGift(remoteGift)
 
                     }) {
                         Text("Send")
@@ -87,21 +89,19 @@ fun SendGiftScreen(
         AddItemMenu(
             expanded = showAddMenu,
             onDismiss = { showAddMenu = false },
-            onAddHeader = { showAddMenu = false; items.add(GiftItem.Header()) },
-            onAddMessage = {showAddMenu = false; items.add(GiftItem.Message()) },
-            onAddVideo = {showAddMenu = false; items.add(GiftItem.Video()) },
-            onAddImage = { showAddMenu = false; items.add(GiftItem.Image()) },
-            onAddAudio = { showAddMenu = false; items.add(GiftItem.Audio()) },
-            onAddFooter = { showAddMenu = false; items.add(GiftItem.Footer()) }
+            onAddHeader = { showAddMenu = false; items.add( HeaderBlock(order = items.size)) },
+            onAddMessage = {showAddMenu = false; items.add(TextBlock(order = items.size)) },
+            onAddVideo = {showAddMenu = false; items.add(VideoBlock(order = items.size)) },
+            onAddImage = { showAddMenu = false; items.add(ImageBlock(order = items.size)) },
+            onAddAudio = { showAddMenu = false; items.add(AudioBlock(order = items.size)) },
+            onAddFooter = { showAddMenu = false; items.add(FooterBlock(order = items.size)) }
         )
     }
 }
 
-
-
 @Composable
 private fun GiftItemsList(
-    items: MutableList<GiftItem>
+    items: MutableList<ContentBlock>
 ) {
     LazyColumn(
         modifier = Modifier
@@ -109,15 +109,15 @@ private fun GiftItemsList(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
+        itemsIndexed(items, key = { _, item -> item.order }) { index, item ->
             Card(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 when(item){
-                    is GiftItem.Image ->{
-                        if(item.uri != null){
+                    is ImageBlock ->{
+                        if(item.url.isNotBlank()){
                             Image(
-                                painter = rememberAsyncImagePainter(item.uri),
+                                painter = rememberAsyncImagePainter(item.url),
                                 contentDescription = "Selected image",
                                 modifier = Modifier.fillMaxWidth(),
                                 contentScale = ContentScale.Fit
@@ -126,24 +126,26 @@ private fun GiftItemsList(
                         MediaPickerButton(
                             mimeType = "image/*",
                             text = "Select image"
-                        ) { uri ->
-                            items[index] = item.copy(uri = uri)
+                        ) { url ->
+                            items[index] = item.copy(url = url)
                         }
                     }
-                    is GiftItem.Video -> {
+                    is VideoBlock -> {
                         //TODO: Tumbnail
-                        Text(text = item.uri?.path ?: "No video selected")
-                        MediaPickerButton("video/*", "Select Video") { uri ->
-                            items[index] = item.copy(uri = uri)
+                        if(item.url.isBlank())
+                            Text(text = "No video selected")
+                        MediaPickerButton("video/*", "Select Video") { url ->
+                            items[index] = item.copy(url = url)
                         }
                     }
-                    is GiftItem.Audio -> {
-                        Text(text = item.uri?.path ?: "No audio selected")
-                        MediaPickerButton("audio/*", "Select Audio") { uri ->
-                            items[index] = item.copy(uri = uri)
+                    is AudioBlock -> {
+                        if(item.url.isBlank())
+                            Text(text = "No audio selected")
+                        MediaPickerButton("audio/*", "Select Audio") { url ->
+                            items[index] = item.copy(url = url)
                         }
                     }
-                    is GiftItem.Header -> {
+                    is HeaderBlock -> {
                         OutlinedTextField(
                             value = item.text,
                             onValueChange = { newText ->
@@ -153,7 +155,7 @@ private fun GiftItemsList(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    is GiftItem.Message -> {
+                    is TextBlock -> {
                         OutlinedTextField(
                             value = item.text,
                             onValueChange = { newText ->
@@ -163,7 +165,7 @@ private fun GiftItemsList(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    is GiftItem.Footer -> {
+                    is FooterBlock -> {
                         OutlinedTextField(
                             value = item.text,
                             onValueChange = { newText ->
