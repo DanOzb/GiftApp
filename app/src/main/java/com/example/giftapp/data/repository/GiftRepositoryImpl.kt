@@ -1,6 +1,7 @@
 package com.example.giftapp.data.repository
 
 import com.example.giftapp.data.local.GiftDao
+import com.example.giftapp.domain.model.ContentBlocksConverter
 import com.example.giftapp.domain.model.GiftEntity
 import com.example.giftapp.domain.model.RemoteGift
 import com.example.giftapp.domain.repository.GiftRepository
@@ -13,7 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class GiftRepositoryImpl @Inject constructor(
     private val dao: GiftDao,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val converter: ContentBlocksConverter = ContentBlocksConverter()
 ): GiftRepository {
     override val getAllGifts: Flow<List<GiftEntity>> = dao.getAllGifts()
     override val getFavoriteGifts: Flow<List<GiftEntity>> = dao.getFavoriteGifts()
@@ -36,14 +38,37 @@ class GiftRepositoryImpl @Inject constructor(
 
     override suspend fun fetchRemoteGift(giftId: String): RemoteGift? {
         return try {
-            val document = firestore.collection("gifts").document(giftId.toString()).get().await()
+            val document = firestore.collection("gifts").document(giftId).get().await()
+            if(!document.exists()) return null
 
-            document.toObject(RemoteGift::class.java)
+            val data = document.data ?: return null
+
+            RemoteGift(
+                id = data["id"] as? String ?: giftId,
+                title = data["title"] as? String ?: "",
+                sender = data["sender"] as? String ?: "",
+                timestamp = data["timestamp"] as? Long ?: 0,
+                contentBlocks = converter.toContentBlockList(data["contentBlocks"] as? String ?: "[]")
+            )
         }catch (e: Exception) {
             e.printStackTrace()
             null
         }
-
     }
 
+    override suspend fun sendGift(remoteGift: RemoteGift) {
+        val contentBlocksJsonString = converter.fromContentBlockList(remoteGift.contentBlocks)
+
+        val giftDocument = mapOf(
+            "id" to remoteGift.id,
+            "title" to remoteGift.title,
+            "sender" to remoteGift.sender,
+            "timestamp" to remoteGift.timestamp,
+            "contentBlocks" to contentBlocksJsonString
+        )
+
+        firestore.collection("gifts").document(remoteGift.id)
+            .set(giftDocument)
+            .await()
+    }
 }

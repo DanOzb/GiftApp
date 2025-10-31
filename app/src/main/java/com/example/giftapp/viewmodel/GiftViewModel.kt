@@ -4,6 +4,7 @@ package com.example.giftapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.giftapp.domain.model.GiftEntity
+import com.example.giftapp.domain.model.RemoteGift
 import com.example.giftapp.domain.repository.GiftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GiftViewModel @Inject constructor(
-    private val repository: GiftRepository,
+    private val repository: GiftRepository
 ): ViewModel() {
 
     val gifts: StateFlow<List<GiftEntity>> = repository.getAllGifts.map {
@@ -62,6 +63,12 @@ class GiftViewModel @Inject constructor(
             }.collect { gift ->
                 currentGift.value = gift
             }
+        }
+    }
+
+    fun sendGift(remoteGift: RemoteGift){
+        viewModelScope.launch {
+            repository.sendGift(remoteGift)
         }
     }
 }
