@@ -42,6 +42,7 @@ import com.example.giftapp.domain.model.VideoBlock
 import com.example.giftapp.ui.screen.components.AddItemMenu
 import com.example.giftapp.ui.screen.components.MediaPickerButton
 import com.example.giftapp.viewmodel.GiftViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,10 +61,11 @@ fun SendGiftScreen(
                     Button(onClick = {
 
                         val remoteGift = RemoteGift(
+                            title = "Gift",
+                            sender = FirebaseAuth.getInstance().currentUser?.uid ?: "-",
                             contentBlocks = items
                         )
                         viewModel.sendGift(remoteGift)
-
                     }) {
                         Text("Send")
                     }

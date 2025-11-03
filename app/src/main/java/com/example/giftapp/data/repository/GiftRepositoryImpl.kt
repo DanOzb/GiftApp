@@ -20,10 +20,8 @@ import com.example.giftapp.domain.model.VideoBlock
 @Singleton
 class GiftRepositoryImpl @Inject constructor(
     private val dao: GiftDao,
-    private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage,
-    private val converter: ContentBlocksConverter = ContentBlocksConverter()
 ): GiftRepository {
+    private val converter: ContentBlocksConverter = ContentBlocksConverter()
     override val getAllGifts: Flow<List<GiftEntity>> = dao.getAllGifts()
     override val getFavoriteGifts: Flow<List<GiftEntity>> = dao.getFavoriteGifts()
 
@@ -45,6 +43,8 @@ class GiftRepositoryImpl @Inject constructor(
 
     override suspend fun fetchRemoteGift(giftId: String): RemoteGift? {
         return try {
+            val firestore = FirebaseFirestore.getInstance()
+
             val document = firestore.collection("gifts").document(giftId).get().await()
             if(!document.exists()) return null
 
@@ -93,6 +93,8 @@ class GiftRepositoryImpl @Inject constructor(
                 "contentBlocks" to contentBlocksJsonString
             )
 
+            val firestore = FirebaseFirestore.getInstance()
+
             firestore.collection("gifts").document(remoteGift.id)
                 .set(giftDocument)
                 .await()
@@ -106,6 +108,7 @@ class GiftRepositoryImpl @Inject constructor(
         folderPath: String = "gifts/",
     ): String {
         return try {
+            val storage = FirebaseStorage.getInstance()
             val filename = UUID.randomUUID().toString()
             val ref = storage.reference.child("$folderPath$filename")
 
