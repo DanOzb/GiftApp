@@ -3,18 +3,25 @@ package com.example.giftapp.data.repository
 import com.example.giftapp.data.local.GiftDao
 import com.example.giftapp.domain.model.ContentBlocksConverter
 import com.example.giftapp.domain.model.GiftEntity
+import com.example.giftapp.domain.model.ImageBlock
 import com.example.giftapp.domain.model.RemoteGift
 import com.example.giftapp.domain.repository.GiftRepository
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import androidx.core.net.toUri
+import com.example.giftapp.domain.model.AudioBlock
+import com.example.giftapp.domain.model.VideoBlock
 
 @Singleton
 class GiftRepositoryImpl @Inject constructor(
     private val dao: GiftDao,
     private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage,
     private val converter: ContentBlocksConverter = ContentBlocksConverter()
 ): GiftRepository {
     override val getAllGifts: Flow<List<GiftEntity>> = dao.getAllGifts()
@@ -56,19 +63,59 @@ class GiftRepositoryImpl @Inject constructor(
         }
     }
 
+
+    //contentBlocks will have local uris by this point, so
+    //we are uploading them to firebase storage and getting their urls assigned
     override suspend fun sendGift(remoteGift: RemoteGift) {
-        val contentBlocksJsonString = converter.fromContentBlockList(remoteGift.contentBlocks)
+        try {
+            for (contentBlock in remoteGift.contentBlocks) {
+                if (contentBlock is ImageBlock) {
+                    val uploadedUrl = uploadMedia(contentBlock.url)
+                    contentBlock.url = uploadedUrl
+                }
+                if (contentBlock is VideoBlock) {
+                    val uploadedUrl = uploadMedia(contentBlock.url)
+                    contentBlock.url = uploadedUrl
+                }
+                if (contentBlock is AudioBlock) {
+                    val uploadedUrl = uploadMedia(contentBlock.url)
+                    contentBlock.url = uploadedUrl
+                }
+            }
 
-        val giftDocument = mapOf(
-            "id" to remoteGift.id,
-            "title" to remoteGift.title,
-            "sender" to remoteGift.sender,
-            "timestamp" to remoteGift.timestamp,
-            "contentBlocks" to contentBlocksJsonString
-        )
+            val contentBlocksJsonString = converter.fromContentBlockList(remoteGift.contentBlocks)
 
-        firestore.collection("gifts").document(remoteGift.id)
-            .set(giftDocument)
-            .await()
+            val giftDocument = mapOf(
+                "id" to remoteGift.id,
+                "title" to remoteGift.title,
+                "sender" to remoteGift.sender,
+                "timestamp" to remoteGift.timestamp,
+                "contentBlocks" to contentBlocksJsonString
+            )
+
+            firestore.collection("gifts").document(remoteGift.id)
+                .set(giftDocument)
+                .await()
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    private suspend fun uploadMedia(
+        uri: String,
+        folderPath: String = "gifts/",
+    ): String {
+        return try {
+            val filename = UUID.randomUUID().toString()
+            val ref = storage.reference.child("$folderPath$filename")
+
+            ref.putFile(uri.toUri()).await()
+
+            ref.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            print("GiftRepository failed to upload media: $uri")
+            e.printStackTrace()
+            throw e
+        }
     }
 }
