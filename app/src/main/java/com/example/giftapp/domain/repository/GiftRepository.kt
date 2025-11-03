@@ -1,5 +1,6 @@
 package com.example.giftapp.domain.repository
 
+import android.net.Uri
 import com.example.giftapp.domain.model.GiftEntity
 import com.example.giftapp.domain.model.RemoteGift
 import kotlinx.coroutines.flow.Flow

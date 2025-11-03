@@ -126,23 +126,23 @@ private fun GiftItemsList(
                         MediaPickerButton(
                             mimeType = "image/*",
                             text = "Select image"
-                        ) { url ->
-                            items[index] = item.copy(url = url)
+                        ) { uri ->
+                            items[index] = item.copy(url = uri)
                         }
                     }
                     is VideoBlock -> {
                         //TODO: Tumbnail
                         if(item.url.isBlank())
                             Text(text = "No video selected")
-                        MediaPickerButton("video/*", "Select Video") { url ->
-                            items[index] = item.copy(url = url)
+                        MediaPickerButton("video/*", "Select Video") { uri ->
+                            items[index] = item.copy(url = uri)
                         }
                     }
                     is AudioBlock -> {
                         if(item.url.isBlank())
                             Text(text = "No audio selected")
-                        MediaPickerButton("audio/*", "Select Audio") { url ->
-                            items[index] = item.copy(url = url)
+                        MediaPickerButton("audio/*", "Select Audio") { uri ->
+                            items[index] = item.copy(url = uri)
                         }
                     }
                     is HeaderBlock -> {

@@ -1,6 +1,9 @@
 package com.example.giftapp.viewmodel
 
 
+import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.giftapp.domain.model.GiftEntity
@@ -20,7 +23,6 @@ import javax.inject.Inject
 class GiftViewModel @Inject constructor(
     private val repository: GiftRepository
 ): ViewModel() {
-
     val gifts: StateFlow<List<GiftEntity>> = repository.getAllGifts.map {
         it.sortedByDescending { gift -> gift.id }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
