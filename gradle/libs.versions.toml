@@ -42,7 +42,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
-
+firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
