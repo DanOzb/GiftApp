@@ -21,10 +21,10 @@
 
 ## viewmodel 
 ✅GiftViewModel -> viewmodel for data related things
-✅PlayerViewModel -> viewmodel for exoplayer 
+✅PlayerViewModel -> viewmodel for exoplayer
+✅Send remote gift to firebase - GiftViewModel
 
 ### Left
-* Send json string to firebase - GiftViewModel
 * make sure app fetches gift correctly
 
 
