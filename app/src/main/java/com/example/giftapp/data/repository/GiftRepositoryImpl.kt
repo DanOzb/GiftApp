@@ -1,5 +1,6 @@
 package com.example.giftapp.data.repository
 
+import android.util.Log
 import com.example.giftapp.data.local.GiftDao
 import com.example.giftapp.domain.model.ContentBlocksConverter
 import com.example.giftapp.domain.model.GiftEntity
@@ -66,7 +67,7 @@ class GiftRepositoryImpl @Inject constructor(
 
     //contentBlocks will have local uris by this point, so
     //we are uploading them to firebase storage and getting their urls assigned
-    override suspend fun sendGift(remoteGift: RemoteGift) {
+    override suspend fun sendGift(remoteGift: RemoteGift): Boolean {
         try {
             for (contentBlock in remoteGift.contentBlocks) {
                 if (contentBlock is ImageBlock) {
@@ -95,11 +96,15 @@ class GiftRepositoryImpl @Inject constructor(
 
             val firestore = FirebaseFirestore.getInstance()
 
-            firestore.collection("gifts").document(remoteGift.id)
-                .set(giftDocument)
+            firestore.collection("gifts")
+                .add(giftDocument)
                 .await()
+            Log.d("GiftRepository", "Gift sent successfully")
+            return true
         } catch (e: Exception){
+            Log.e("GiftRepository", "Error during send gift operation", e)
             e.printStackTrace()
+            return false
         }
     }
 

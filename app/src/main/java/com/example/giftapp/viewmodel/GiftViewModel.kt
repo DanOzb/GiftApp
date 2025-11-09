@@ -1,9 +1,5 @@
 package com.example.giftapp.viewmodel
 
-
-import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.giftapp.domain.model.GiftEntity
@@ -29,6 +25,9 @@ class GiftViewModel @Inject constructor(
 
     private val currentGift = MutableStateFlow<GiftEntity?>(null)
     val openedGift: StateFlow<GiftEntity?> = currentGift.asStateFlow()
+
+    private val _sendGiftResult = MutableStateFlow<Boolean?>(null)
+    val sendGiftResult = _sendGiftResult.asStateFlow()
 
     val favoriteGifts: StateFlow<List<GiftEntity>> = repository.getFavoriteGifts.map {
         it.sortedByDescending { gift -> gift.id }
@@ -70,7 +69,12 @@ class GiftViewModel @Inject constructor(
 
     fun sendGift(remoteGift: RemoteGift){
         viewModelScope.launch {
-            repository.sendGift(remoteGift)
+            val success = repository.sendGift(remoteGift)
+            _sendGiftResult.value = success
         }
+    }
+
+    fun resetSendGiftResult(){
+        _sendGiftResult.value = null
     }
 }
