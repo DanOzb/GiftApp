@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,12 +23,6 @@ fun OpenGiftScreen(
 ) {
     val sortedBlocks = remember(contentBlocks) {
         contentBlocks.sortedBy { it.order }
-    }
-
-    DisposableEffect(key1 = Unit) {
-        onDispose {
-            onExit()
-        }
     }
 
     Column(
