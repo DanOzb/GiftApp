@@ -8,6 +8,7 @@ import com.example.giftapp.domain.model.RemoteGift
 import com.example.giftapp.domain.repository.GiftRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -60,13 +61,15 @@ class GiftViewModel @Inject constructor(
         repository.updateGift(giftEntity)
     }
 
-    fun loadAndSaveGift(giftId: String) {
-        viewModelScope.launch {
+    fun loadAndSaveGift(giftId: String): Job {
+        return viewModelScope.launch {
             val remoteGift = repository.fetchRemoteGift(giftId)
+            Log.d("GiftViewModel", "Loading gift with ID: $giftId")
             if (remoteGift != null) {
                 val entity = repository.toEntity(remoteGift)
                 repository.addGift(entity)
                 currentGift.value = entity
+                Log.d("GiftViewModel", "Successfully loaded gift with ID: $giftId")
             } else {
                 println("Error: Gift not found")
             }
