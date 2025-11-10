@@ -51,6 +51,7 @@ import com.example.giftapp.ui.screen.components.AddItemMenu
 import com.example.giftapp.ui.screen.components.MediaPickerButton
 import com.example.giftapp.viewmodel.GiftViewModel
 import com.google.firebase.auth.FirebaseAuth
+import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +65,13 @@ fun SendGiftScreen(
     var isLoading by remember { mutableStateOf(false) }
     var showResultDialog by remember { mutableStateOf(false) }
     val sendResult by viewModel.sendGiftResult.collectAsState()
+    var sendable by remember { mutableStateOf(false) }
+
+    if(items.isNotEmpty()){
+        sendable = true
+    } else {
+        sendable = false
+    }
 
     LaunchedEffect(sendResult) {
         if(sendResult != null) {
@@ -77,16 +85,18 @@ fun SendGiftScreen(
             TopAppBar(
                 title = { Text("Send Gift") },
                 actions = {
-                    Button(onClick = {
+                    Button(
+                        onClick = {
                         isLoading = true
                         val remoteGift = RemoteGift(
+                            id = UUID.randomUUID().toString(),
                             title = "Gift",
                             sender = FirebaseAuth.getInstance().currentUser?.uid ?: "-",
                             contentBlocks = items
                         )
                         viewModel.sendGift(remoteGift)
                     },
-                        enabled = !isLoading
+                        enabled = !isLoading && sendable
                         ) {
                         Text("Send")
                     }
@@ -134,7 +144,7 @@ fun SendGiftScreen(
                             onClick = {
                                 showResultDialog = false
                                 if (sendResult == true) {
-                                    items.clear() // Clear items on success
+                                    items.clear()
                                 }
                                 viewModel.resetSendGiftResult()
                             }
@@ -184,7 +194,7 @@ private fun GiftItemsList(
                         }
                         MediaPickerButton(
                             mimeType = "image/*",
-                            text = "Select image"
+                            text = "Select image",
                         ) { uri ->
                             items[index] = item.copy(url = uri)
                         }
