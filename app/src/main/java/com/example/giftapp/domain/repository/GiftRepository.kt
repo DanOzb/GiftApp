@@ -14,6 +14,9 @@ interface GiftRepository {
     suspend fun deleteGift(giftEntity: GiftEntity)
 
     suspend fun fetchRemoteGift(giftId: String): RemoteGift?
+
+    suspend fun fetchRemoteGiftIds(): List<String>
+
     suspend fun toEntity(remoteGift: RemoteGift): GiftEntity
 
     suspend fun sendGift(remoteGift: RemoteGift): Boolean

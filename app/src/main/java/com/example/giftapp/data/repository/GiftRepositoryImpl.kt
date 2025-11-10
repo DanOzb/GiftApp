@@ -17,6 +17,8 @@ import javax.inject.Singleton
 import androidx.core.net.toUri
 import com.example.giftapp.domain.model.AudioBlock
 import com.example.giftapp.domain.model.VideoBlock
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 
 @Singleton
 class GiftRepositoryImpl @Inject constructor(
@@ -40,6 +42,31 @@ class GiftRepositoryImpl @Inject constructor(
             timestamp = remoteGift.timestamp,
             contentBlocks = remoteGift.contentBlocks,
         )
+    }
+
+    override suspend fun fetchRemoteGiftIds(): List<String> {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        if(currentUserId == null){
+            Log.e("GiftRepository", "Cannoot feth gift IDs. User not authenticated")
+            return emptyList()
+        }
+        return try {
+            val firestore = FirebaseFirestore.getInstance()
+            val querySnapshot = firestore.collection("gifts")
+                .whereNotEqualTo("sender", currentUserId)
+                .orderBy("sender")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            querySnapshot.documents.map { it.id }
+        } catch (e: Exception) {
+            Log.e("GiftRepository", "Error fetching gift IDs", e)
+            e.printStackTrace()
+            emptyList()
+        }
+
+
     }
 
     override suspend fun fetchRemoteGift(giftId: String): RemoteGift? {
