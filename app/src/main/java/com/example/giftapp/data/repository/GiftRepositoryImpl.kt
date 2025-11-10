@@ -78,6 +78,8 @@ class GiftRepositoryImpl @Inject constructor(
 
             val data = document.data ?: return null
 
+            deleteRemoteGift(giftId)
+
             RemoteGift(
                 id = data["id"] as? String ?: giftId,
                 title = data["title"] as? String ?: "",
@@ -124,7 +126,8 @@ class GiftRepositoryImpl @Inject constructor(
             val firestore = FirebaseFirestore.getInstance()
 
             firestore.collection("gifts")
-                .add(giftDocument)
+                .document(remoteGift.id)
+                .set(giftDocument)
                 .await()
             Log.d("GiftRepository", "Gift sent successfully")
             return true
@@ -151,6 +154,17 @@ class GiftRepositoryImpl @Inject constructor(
             print("GiftRepository failed to upload media: $uri")
             e.printStackTrace()
             throw e
+        }
+    }
+
+    private suspend fun deleteRemoteGift(giftId: String){
+        try{
+            val firestore = FirebaseFirestore.getInstance()
+            firestore.collection("gifts").document(giftId).delete().await()
+            Log.d("GiftRepository", "Gift deleted successfully")
+        } catch (e: Exception){
+            Log.e("GiftRepository", "Error during delete gift operation", e)
+            e.printStackTrace()
         }
     }
 }
