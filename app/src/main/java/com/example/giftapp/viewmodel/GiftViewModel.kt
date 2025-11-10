@@ -1,10 +1,12 @@
 package com.example.giftapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.giftapp.domain.model.GiftEntity
 import com.example.giftapp.domain.model.RemoteGift
 import com.example.giftapp.domain.repository.GiftRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,6 +31,19 @@ class GiftViewModel @Inject constructor(
     private val _sendGiftResult = MutableStateFlow<Boolean?>(null)
     val sendGiftResult = _sendGiftResult.asStateFlow()
 
+    private val _remoteGiftIds = MutableStateFlow<List<String>>(emptyList())
+    val remoteGiftIds: StateFlow<List<String>> = _remoteGiftIds.asStateFlow()
+
+    fun syncGiftIDs(){
+        viewModelScope.launch {
+            val user = FirebaseAuth.getInstance().currentUser
+            if(user != null){
+                _remoteGiftIds.value = repository.fetchRemoteGiftIds()
+                Log.d("GiftViewModel", "Synced ${_remoteGiftIds.value.size} gift IDs.")
+            }
+        }
+    }
+
     val favoriteGifts: StateFlow<List<GiftEntity>> = repository.getFavoriteGifts.map {
         it.sortedByDescending { gift -> gift.id }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
@@ -51,18 +66,9 @@ class GiftViewModel @Inject constructor(
             if (remoteGift != null) {
                 val entity = repository.toEntity(remoteGift)
                 repository.addGift(entity)
+                currentGift.value = entity
             } else {
                 println("Error: Gift not found")
-            }
-        }
-    }
-
-    fun getGiftById(giftId: String) {
-        viewModelScope.launch {
-            repository.getAllGifts.map { giftList ->
-                giftList.find { it.id == giftId }
-            }.collect { gift ->
-                currentGift.value = gift
             }
         }
     }
@@ -76,5 +82,10 @@ class GiftViewModel @Inject constructor(
 
     fun resetSendGiftResult(){
         _sendGiftResult.value = null
+    }
+
+
+    fun clearOpenedGift() {
+        currentGift.value = null
     }
 }
