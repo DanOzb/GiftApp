@@ -13,16 +13,17 @@ import dagger.hilt.android.HiltAndroidApp
 class MyApplication : Application(){
     override fun onCreate() {
         super.onCreate()
-        FirebaseApp.initializeApp(this)
 
-        FirebaseAuth.getInstance().signInAnonymously()
-            .addOnSuccessListener {
-                Firebase.firestore
-                Firebase.storage
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-            }
+        if(FirebaseAuth.getInstance().currentUser == null){
+            FirebaseAuth.getInstance().signInAnonymously()
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+
+                    } else {
+                        task.exception?.printStackTrace()
+                    }
+                }
+        }
     }
 
 }

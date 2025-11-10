@@ -23,7 +23,6 @@ fun MediaPickerButton(
     val pickMedia = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
-        //TODO: Change uri to downloadable url
         onMediaSelected(uri.toString())
     }
 

@@ -42,5 +42,6 @@
 * SendGiftScreen - Add better ui
 * Add loading dialog boxes
 * add error dialog boxes
+* don't allow empty gift send
 
 
