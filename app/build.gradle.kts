@@ -92,4 +92,6 @@ dependencies {
     //json
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(libs.androidx.compose.foundation)
+
 }
