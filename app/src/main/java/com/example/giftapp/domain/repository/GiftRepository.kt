@@ -20,4 +20,6 @@ interface GiftRepository {
     suspend fun toEntity(remoteGift: RemoteGift): GiftEntity
 
     suspend fun sendGift(remoteGift: RemoteGift): Boolean
+
+    suspend fun deleteRemoteGift(giftId: String)
 }

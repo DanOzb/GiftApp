@@ -20,7 +20,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.giftapp.R
 import com.example.giftapp.domain.model.AudioBlock
 import com.example.giftapp.viewmodel.PlayerViewModel
 
@@ -46,7 +49,11 @@ fun AudioBlockItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Default.PlayArrow,
+                painter = if (isPlaying) {
+                    painterResource(R.drawable.heroicons_pause)
+                } else {
+                    rememberVectorPainter(Icons.Default.PlayArrow)
+                },
                 contentDescription = "Audio",
                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier.size(32.dp)

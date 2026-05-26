@@ -23,7 +23,7 @@ class GiftViewModel @Inject constructor(
     private val repository: GiftRepository
 ): ViewModel() {
     val gifts: StateFlow<List<GiftEntity>> = repository.getAllGifts.map {
-        it.sortedByDescending { gift -> gift.id }
+        it.sortedByDescending { gift -> gift.timestamp }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val currentGift = MutableStateFlow<GiftEntity?>(null)
@@ -46,7 +46,7 @@ class GiftViewModel @Inject constructor(
     }
 
     val favoriteGifts: StateFlow<List<GiftEntity>> = repository.getFavoriteGifts.map {
-        it.sortedByDescending { gift -> gift.id }
+        it.sortedByDescending { gift -> gift.timestamp }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     fun addGift(giftEntity: GiftEntity) = viewModelScope.launch {
@@ -70,7 +70,10 @@ class GiftViewModel @Inject constructor(
                 repository.addGift(entity)
                 currentGift.value = entity
                 Log.d("GiftViewModel", "Successfully loaded gift with ID: $giftId")
+                repository.deleteRemoteGift(giftId)
             } else {
+                //if gift not found, current gift should be null
+                currentGift.value = null
                 println("Error: Gift not found")
             }
         }

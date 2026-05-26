@@ -19,6 +19,7 @@ class ContentBlocksConverter {
                 subclass(ImageBlock::class)
                 subclass(VideoBlock::class)
                 subclass(FooterBlock::class)
+                subclass(AudioBlock::class)
             }
         }
         ignoreUnknownKeys = true

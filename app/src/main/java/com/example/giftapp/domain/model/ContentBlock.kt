@@ -26,7 +26,7 @@ data class TextBlock(
 @SerialName("image")
 data class ImageBlock(
     override val order: Int = 0,
-    var url: String = "",
+    val url: String = "",
     val caption: String = ""
 ) : ContentBlock
 
@@ -34,14 +34,14 @@ data class ImageBlock(
 @SerialName("video")
 data class VideoBlock(
     override val order: Int = 0,
-    var url: String = ""
+    val url: String = ""
 ) : ContentBlock
 
 @Serializable
 @SerialName("audio")
 data class AudioBlock(
     override val order: Int = 0,
-    var url: String = ""
+    val url: String = ""
 ) : ContentBlock
 
 @Serializable

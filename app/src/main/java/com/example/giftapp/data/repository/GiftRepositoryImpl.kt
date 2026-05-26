@@ -19,10 +19,14 @@ import com.example.giftapp.domain.model.AudioBlock
 import com.example.giftapp.domain.model.VideoBlock
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 
 @Singleton
 class GiftRepositoryImpl @Inject constructor(
     private val dao: GiftDao,
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
 ): GiftRepository {
     private val converter: ContentBlocksConverter = ContentBlocksConverter()
     override val getAllGifts: Flow<List<GiftEntity>> = dao.getAllGifts()
@@ -45,13 +49,12 @@ class GiftRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchRemoteGiftIds(): List<String> {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        val currentUserId = auth.currentUser?.uid
         if(currentUserId == null){
-            Log.e("GiftRepository", "Cannoot feth gift IDs. User not authenticated")
+            Log.e("GiftRepository", "Cannoot fetch gift IDs. User not authenticated")
             return emptyList()
         }
         return try {
-            val firestore = FirebaseFirestore.getInstance()
             val querySnapshot = firestore.collection("gifts")
                 .whereNotEqualTo("sender", currentUserId)
                 .orderBy("sender")
@@ -71,14 +74,10 @@ class GiftRepositoryImpl @Inject constructor(
 
     override suspend fun fetchRemoteGift(giftId: String): RemoteGift? {
         return try {
-            val firestore = FirebaseFirestore.getInstance()
-
             val document = firestore.collection("gifts").document(giftId).get().await()
             if(!document.exists()) return null
 
             val data = document.data ?: return null
-
-            deleteRemoteGift(giftId)
 
             RemoteGift(
                 id = data["id"] as? String ?: giftId,
@@ -98,22 +97,16 @@ class GiftRepositoryImpl @Inject constructor(
     //we are uploading them to firebase storage and getting their urls assigned
     override suspend fun sendGift(remoteGift: RemoteGift): Boolean {
         try {
-            for (contentBlock in remoteGift.contentBlocks) {
-                if (contentBlock is ImageBlock) {
-                    val uploadedUrl = uploadMedia(contentBlock.url)
-                    contentBlock.url = uploadedUrl
-                }
-                if (contentBlock is VideoBlock) {
-                    val uploadedUrl = uploadMedia(contentBlock.url)
-                    contentBlock.url = uploadedUrl
-                }
-                if (contentBlock is AudioBlock) {
-                    val uploadedUrl = uploadMedia(contentBlock.url)
-                    contentBlock.url = uploadedUrl
+            val uploadedBlocks = remoteGift.contentBlocks.map { block ->
+                when(block) {
+                    is ImageBlock -> block.copy(url = uploadMedia(block.url))
+                    is VideoBlock -> block.copy(url = uploadMedia(block.url))
+                    is AudioBlock -> block.copy(url = uploadMedia(block.url))
+                    else -> block
                 }
             }
 
-            val contentBlocksJsonString = converter.fromContentBlockList(remoteGift.contentBlocks)
+            val contentBlocksJsonString = converter.fromContentBlockList(uploadedBlocks)
 
             val giftDocument = mapOf(
                 "id" to remoteGift.id,
@@ -122,8 +115,6 @@ class GiftRepositoryImpl @Inject constructor(
                 "timestamp" to remoteGift.timestamp,
                 "contentBlocks" to contentBlocksJsonString
             )
-
-            val firestore = FirebaseFirestore.getInstance()
 
             firestore.collection("gifts")
                 .document(remoteGift.id)
@@ -143,7 +134,6 @@ class GiftRepositoryImpl @Inject constructor(
         folderPath: String = "gifts/",
     ): String {
         return try {
-            val storage = FirebaseStorage.getInstance()
             val filename = UUID.randomUUID().toString()
             val ref = storage.reference.child("$folderPath$filename")
 
@@ -157,9 +147,8 @@ class GiftRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun deleteRemoteGift(giftId: String){
+    override suspend fun deleteRemoteGift(giftId: String){
         try{
-            val firestore = FirebaseFirestore.getInstance()
             firestore.collection("gifts").document(giftId).delete().await()
             Log.d("GiftRepository", "Gift deleted successfully")
         } catch (e: Exception){

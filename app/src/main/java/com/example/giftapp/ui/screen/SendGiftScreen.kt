@@ -92,6 +92,7 @@ fun SendGiftScreen(
                             id = UUID.randomUUID().toString(),
                             title = "Gift",
                             sender = FirebaseAuth.getInstance().currentUser?.uid ?: "-",
+                            timestamp = System.currentTimeMillis(),
                             contentBlocks = items
                         )
                         viewModel.sendGift(remoteGift)
